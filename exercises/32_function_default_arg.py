@@ -1,21 +1,51 @@
-# <replaceAll targets='["_FUNC1_"]' with='["foo","bar","baz"]' />
-# <select>
-# <option>
-def _FUNC1_(s=1):# <replace p="1.0" from='"s=1"' to='["s","s=1","s=2","s=3","s=4"]' />
-    print(f"s={s}")
+# <meta[replace] target=["_F_"] with=["greet","calc","show"]>
+# <meta[replace] target=["_A_"] with=["a","x","n"]>
+# <meta[select]>
+# <meta[option]>
+def _F_(_A_=1):# <meta[replace] p="1.0" target="1" with=["1","2","3"]/><meta[replace] p="0.1" target=":" with=[""]/>
+    print(_A_)# <meta[replace] p="0.1" target="    print" with=["print"]/>
 
-_FUNC1_(2)# <replace p="1.0" from='"2"' to='["", "1", "2"]' />
-# </option>
-# <option>
-def _FUNC1_(name="d"):# <replace p="1.0" from='"name=\"d\""' to='["name=\"d\"","name"]' />
-    print(f"{name}")
+_F_(5)# <meta[replace] p="1.0" target="5" with=["5","7","10"]/>
+# </meta[option]>
+# <meta[option]>
+def _F_(_A_=1):# <meta[replace] p="1.0" target="1" with=["1","2","3"]/><meta[replace] p="0.1" target=":" with=[""]/>
+    print(_A_)# <meta[replace] p="0.1" target="    print" with=["print"]/>
 
-_FUNC1_(a)# <replace p="1.0" from='"a"' to='["", "\"a\"", "\"b\""]' />
-# </option>
-# </select>
+_F_()
+# </meta[option]>
+# <meta[option]>
+def _F_(_A_=1):# <meta[replace] p="1.0" target="1" with=["1","2","3"]/><meta[replace] p="0.1" target=":" with=[""]/>
+    return _A_ + 1# <meta[replace] p="1.0" target="+ 1" with=["+ 1","* 2","+ 3"]/><meta[replace] p="0.2" target="    return" with=["    return","return"]/>
 
-# <explanation>
-# Key points:
-# - Default arguments are set with = in the definition: def func(a, b=10)
-# - When calling a function, default arguments can be omitted
-# </explanation>
+print(_F_(5))# <meta[replace] p="1.0" target="5" with=["5","4","6"]/>
+print(_F_())
+# </meta[option]>
+# <meta[option]>
+def _F_(_A_=1):# <meta[replace] p="1.0" target="1" with=["1","2","3"]/><meta[replace] p="0.1" target=":" with=[""]/>
+    print(_A_)# <meta[replace] p="0.1" target="    print" with=["print"]/>
+
+_F_(5)# <meta[replace] p="1.0" target="5" with=["5","7","10"]/>
+_F_()
+# </meta[option]>
+# <meta[option]>
+def _F_(_A_="hello"):# <meta[replace] p="1.0" target='"hello"' with=['"hello"','"world"','"hi"']/><meta[replace] p="0.1" target=":" with=[""]/>
+    print(_A_)# <meta[replace] p="0.1" target="    print" with=["print"]/>
+
+_F_("bye")# <meta[replace] p="1.0" target='"bye"' with=['"bye"','"ok"','"yes"']/>
+# </meta[option]>
+# <meta[option]>
+def _F_(_A_="hello"):# <meta[replace] p="1.0" target='"hello"' with=['"hello"','"world"','"hi"']/><meta[replace] p="0.1" target=":" with=[""]/>
+    print(_A_)# <meta[replace] p="0.1" target="    print" with=["print"]/>
+
+_F_()
+# </meta[option]>
+# <meta[option]>
+def _F_(_A_="hello"):# <meta[replace] p="1.0" target='"hello"' with=['"hello"','"world"','"hi"']/><meta[replace] p="0.1" target=":" with=[""]/>
+    print(_A_)# <meta[replace] p="0.1" target="    print" with=["print"]/>
+
+_F_("bye")# <meta[replace] p="1.0" target='"bye"' with=['"bye"','"ok"','"yes"']/>
+_F_()
+# </meta[option]>
+# </meta[select]>
+# </meta[replace]>
+# </meta[replace]>

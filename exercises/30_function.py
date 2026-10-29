@@ -1,32 +1,50 @@
-# <replaceAll targets='["_FUNC1_"]' with='["foo","bar","baz"]' />
-# <select>
-# <option>
-def _FUNC1_(a,b,c):#<replace p="0.2" from='"def "' to='[""]' /><replace p="0.2" from='":"' to='[""]' /><replace p="0.2" from='"a,b,c"' to='["a+b+c",""]' />
-    w = a+b+c # <replace p="0.1" from='"    "' to='[""]' />
-    return w # <replace p="0.1" from='"    "' to='[""]' /><replace p="0.1" from='"return "' to='[""]' />
+# <meta[replace] target=["_F_"] with=["greet","calc","show"]>
+# <meta[replace] target=["_A_"] with=["a","x","n"]>
+# <meta[replace] target=["_B_"] with=["b","y","m"]>
+# <meta[select]>
+# <meta[option]>
+def _F_(_A_):# <meta[replace] p="0.15" target=":" with=[""]/>
+    print(_A_)# <meta[replace] p="0.15" target="    print" with=["print"]/>
 
-x = 1# <replace p="0.5" from='"1"' to='["2","3"]' />
-print(_FUNC1_(x,x,x))
-print(_FUNC1_(2,2,2))# <skipLine p="0.7" />
-# </option>
-# <option>
-def _FUNC1_(a,b,c):#<replace p="0.2" from='"def "' to='[""]' /><replace p="0.2" from='":"' to='[""]' /><replace p="0.2" from='"a,b,c"' to='["a+b+c",""]' />
-    return a+b+c # <replace p="0.1" from='"    "' to='[""]' /><replace p="0.1" from='"a+b+c"' to='["w","w=a+b+c"]' /><replace p="0.1" from='"return "' to='[""]' />
+_F_(3)# <meta[replace] p="1.0" target="3" with=["3","5","7"]/>
+# </meta[option]>
+# <meta[option]>
+def _F_(_A_):# <meta[replace] p="0.15" target=":" with=[""]/>
+    print(_A_)# <meta[replace] p="0.15" target="    print" with=["print"]/>
 
-print(_FUNC1_(1,1,1))
-print(_FUNC1_(2,2,2))# <skipLine p="0.7" />
-# </option>
-# <option>
-_FUNC1_(1,1,1)# <skipLine p="0.8" />
+v = 4# <meta[replace] p="1.0" target="4" with=["4","6","8"]/>
+_F_(v)
+# </meta[option]>
+# <meta[option]>
+def _F_(_A_):# <meta[replace] p="0.15" target=":" with=[""]/>
+    return _A_ + 1# <meta[replace] p="1.0" target="1" with=["1","2","3"]/><meta[replace] p="0.15" target="    return" with=["return"]/>
 
-def _FUNC1_(a,b,c):#<replace p="0.2" from='"def "' to='[""]' /><replace p="0.2" from='":"' to='[""]' /><replace p="0.2" from='"a,b,c"' to='["a+b+c",""]' />
-    print(a+b+c) # <replace p="0.1" from='"    "' to='[""]' /><replace p="0.1" from='"a+b+c"' to='["w","w=a+b+c"]' /><replace p="0.1" from='"return "' to='[""]' />
+print(_F_(3))# <meta[replace] p="1.0" target="3" with=["3","5","7"]/>
+# </meta[option]>
+# <meta[option]>
+def _F_(_A_, _B_):# <meta[replace] p="0.15" target=":" with=[""]/>
+    return _A_ + _B_# <meta[replace] p="0.15" target="    return" with=["return"]/>
 
-_FUNC1_(1,1,1)# <skipLine p="0.5" />
-_FUNC1_(2,2,2)# <skipLine p="0.7" />
-# </option>
-# </select>
+v = 3# <meta[replace] p="1.0" target="3" with=["3","4","5"]/>
+print(_F_(v, 2))# <meta[replace] p="1.0" target="2" with=["2","3","1"]/>
+# </meta[option]>
+# <meta[option]>
+def _F_():# <meta[replace] p="0.15" target=":" with=[""]/>
+    print("a")# <meta[replace] p="0.15" target="    print" with=["print"]/>
 
+_F_()
+_F_()
+_F_()
+# </meta[option]>
+# <meta[option]>
+def _F_(_A_):# <meta[replace] p="0.15" target=":" with=[""]/>
+    return _A_ * 2# <meta[replace] p="1.0" target="2" with=["2","3","4"]/><meta[replace] p="0.15" target="    return" with=["return"]/>
 
-
-
+r = _F_(3)# <meta[replace] p="1.0" target="3" with=["3","4","5"]/>
+print(r)
+print(_F_(6))# <meta[replace] p="1.0" target="6" with=["6","5","7"]/>
+# </meta[option]>
+# </meta[select]>
+# </meta[replace]>
+# </meta[replace]>
+# </meta[replace]>

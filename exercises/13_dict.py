@@ -1,15 +1,26 @@
-# <replaceAll targets='["_dict"]' with='["my_dict","d","f"]' />
-# <replaceAll targets='["_B_"]' with='["\"orange\"","\"cherry\"","\"apple\"", "apple", "orange"]' />
-_dict = {"apple":100,"orange":80}
-# <select>
-# <option>
-print(_dict[_A_])# <replace p="1.0" from='"_A_"' to='["\"orange\"","\"cherry\"","\"apple\"", "apple", "orange"]' />
-# </option>
-# <option>
-print("apple" in _dict)# <replace p="0.8" from='"apple"' to='["orange","cherry","apple"]' />
-# </option>
-# <option>
-_dict[_B_]=200# <replace p="0.8" from='"="' to='["=","-=","+="]' /># <replace p="0.8" from='200' to='[150,250,300,10,20,30]' />
-print(_dict[_B_])
-# </option>
-# </select>
+# <meta[replace] target=["_D_"] with=["d","info","data"]>
+# <meta[select]>
+# <meta[option]>
+_D_ = {"name": "Alice", "age": 20}# <meta[replace] p="1.0" target='"Alice"' with=['"Alice"','"Bob"','"Carol"']/>
+print(_D_["name"])# <meta[replace] p="0.25" target='"name"' with=['"name"','"name"',"name",'"age"']/>
+# </meta[option]>
+# <meta[option]>
+_D_ = {"name": "Alice", "age": 20}# <meta[replace] p="1.0" target='"Alice"' with=['"Alice"','"Bob"','"Carol"']/>
+print(_D_["score"])# <meta[replace] p="0.5" target='"score"' with=['"score"','"name"']/>
+# </meta[option]>
+# <meta[option]>
+_D_ = {"name": "Alice", "score": 85}# <meta[replace] p="1.0" target="85" with=["85","70","95"]/>
+print("name" in _D_)# <meta[replace] p="0.5" target='"name"' with=['"name"','"age"']/>
+# </meta[option]>
+# <meta[option]>
+_D_ = {"name": "Alice", "score": 85}# <meta[replace] p="1.0" target="85" with=["85","70","95"]/>
+_D_["score"] = 90# <meta[replace] p="1.0" target="90" with=["90","60","100"]/>
+print(_D_["score"])
+# </meta[option]>
+# <meta[option]>
+_D_ = {"name": "Alice", "score": 85}# <meta[replace] p="1.0" target="85" with=["85","70","95"]/>
+_D_["age"] = 20# <meta[replace] p="1.0" target="20" with=["20","18","22"]/>
+print(_D_["age"])
+# </meta[option]>
+# </meta[select]>
+# </meta[replace]>

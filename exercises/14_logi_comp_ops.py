@@ -1,45 +1,24 @@
-x = 1# <replace p = "1.0" from = '1' to= '[1,2,3,4,5,6,7,8,9,10]' />
-result = x<a#<replace p = "1.0" from = '"a"' to= '["1","2","3","4","5","6","7","8","9","10"]' /><replace p = "1.0" from = '"<"' to= '["<=",">=","==","!=","<",">"]' />
+# <meta[replace] target=["_X_"] with=["x","y","n"]>
+# <meta[replace] target=["_P_"] with=["p","q","flag"]>
+# <meta[select]>
+# <meta[option]>
+_X_ = 5# <meta[replace] p="1.0" target="5" with=["5","3","8"]/>
+result = _X_ == 5# <meta[replace] p="1.0" target="==" with=["==","!=","<",">"]/><meta[replace] p="1.0" target="5" with=["5","3","8"]/>
 print(result)
-
-x = 1# <replace p = "1.0" from = '1' to= '[1,2,3,4,5,6,7,8,9,10]' />
-# <select>
-# <option>
-print(a<x and x<b)#<replace p = "1.0" from = '"a"' to= '["1","2","3","4","5","6","7","8","9","10"]' /><replace p = "1.0" from = '"b"' to= '["1","2","3","4","5","6","7","8","9","10"]' />
-# </option>
-# <option>
-print(a<=x and x<=b)# <replace p = "1.0" from = '"a"' to= '["1","2","3","4","5","6","7","8","9","10"]' /><replace p = "1.0" from = '"b"' to= '["1","2","3","4","5","6","7","8","9","10"]' />
-# </option>
-# <option>
-print(a<=x and x<b)# <replace p = "1.0" from = '"a"' to= '["1","2","3","4","5","6","7","8","9","10"]' /><replace p = "1.0" from = '"b"' to= '["1","2","3","4","5","6","7","8","9","10"]' />
-# </option>
-# <option>
-print(x==a or x<=b)# <replace p = "1.0" from = '"a"' to= '["1","2","3","4","5","6","7","8","9","10"]' /><replace p = "1.0" from = '"b"' to= '["1","2","3","4","5","6","7","8","9","10"]' /><replace p = "1.0" from = '"=="' to= '["==","<=","<"]' />
-# </option>
-# <option>
-print(x<=a or b<x)# <replace p = "1.0" from = '"a"' to= '["1","2","3","4","5","6","7","8","9","10"]' /><replace p = "1.0" from = '"b"' to= '["1","2","3","4","5","6","7","8","9","10"]' />
-# </option>
-# <option>
-print(a<=x or x<b)# <replace p = "1.0" from = '"a"' to= '["1","2","3","4","5","6","7","8","9","10"]' /><replace p = "1.0" from = '"b"' to= '["1","2","3","4","5","6","7","8","9","10"]' />
-# </option>
-# </select>
-
-a = True# <replace p = "1.0" from = '"True"' to= '["True","False"]' />
-b = True# <replace p = "1.0" from = '"True"' to= '["True","False"]' />
-# <select>
-# <option>
-c = a and b# <replace p = "1.0" from = '"a and b"' to= '["a and b","a or b","not a","not b"]' />
-print(c)
-# </option>
-# <option>
-print(a and b)# <replace p = "1.0" from = '"a and b"' to= '["a and b","a or b","not a","not b"]' />
-# </option>
-# </select>
-
-
-# <explanation>
-# Key points:
-# - True and True  --> True
-# - True and False --> False
-# - True or False  --> True
-# </explanation>
+# </meta[option]>
+# <meta[option]>
+_X_ = 5# <meta[replace] p="1.0" target="5" with=["5","4","7"]/>
+print(_X_ > 3 and _X_ < 8)# <meta[replace] p="1.0" target="and" with=["and","or"]/><meta[replace] p="1.0" target="> 3" with=["> 3","> 6","< 3"]/><meta[replace] p="1.0" target="< 8" with=["< 8","< 5","> 2"]/>
+# </meta[option]>
+# <meta[option]>
+_P_ = True# <meta[replace] p="1.0" target="True" with=["True","False"]/>
+r = False# <meta[replace] p="1.0" target="False" with=["False","True"]/>
+print(_P_ and r)# <meta[replace] p="1.0" target="and" with=["and","or"]/>
+# </meta[option]>
+# <meta[option]>
+_P_ = True# <meta[replace] p="1.0" target="True" with=["True","False"]/>
+print(not _P_)
+# </meta[option]>
+# </meta[select]>
+# </meta[replace]>
+# </meta[replace]>

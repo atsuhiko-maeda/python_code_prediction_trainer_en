@@ -1,14 +1,35 @@
-# <select>
-# <option>
-x = 0# <replace p="1.0" from='0' to='[0,0,0,2,3]' />
-while x <= 5:# <replace p="1.0" from='5' to='["2","3"]' /><replace p="1.0" from='"<="' to='["<=","<"]' />
-    x += 1# <replace p="0.2" from='"    "' to='["","    "]' />
-    print(x)# <replace p="0.5" from='"    "' to='["","    "]' />
-# </option>
-# <option>
-x = 0# <replace p="1.0" from='0' to='[0,0,0,2,3]' />
-while x <= 5:# <replace p="1.0" from='5' to='["2","3"]' /><replace p="1.0" from='"<="' to='["<=","<"]' />
-    print(x)
-    x += 1
-# </option>
-# </select>
+# <meta[replace] target=["_V_"] with=["i","x","n"]>
+# <meta[select]>
+# <meta[option]>
+_V_ = 0# <meta[replace] p="1.0" target="0" with=["0","1","0"]/>
+while _V_ < 3:# <meta[replace] p="1.0" target="3" with=["3","4","5"]/>
+    print(_V_)
+    _V_ += 1
+# </meta[option]>
+# <meta[option]>
+_V_ = 0# <meta[replace] p="1.0" target="0" with=["0","1","0"]/>
+while _V_ < 3:# <meta[replace] p="1.0" target="3" with=["3","4","5"]/>
+    _V_ += 1
+    print(_V_)
+# </meta[option]>
+# <meta[option]>
+_V_ = 5# <meta[replace] p="1.0" target="5" with=["5","4","6"]/>
+while _V_ > 2:# <meta[replace] p="1.0" target="2" with=["2","1","3"]/>
+    print(_V_)
+    _V_ -= 1
+# </meta[option]>
+# <meta[option]>
+_V_ = 5# <meta[replace] p="1.0" target="5" with=["5","4","6"]/>
+while _V_ > 2:# <meta[replace] p="1.0" target="2" with=["2","1","3"]/>
+    _V_ -= 1
+    print(_V_)
+# </meta[option]>
+# <meta[option]>
+_V_ = 3# <meta[replace] p="1.0" target="3" with=["3","5","4"]/>
+while _V_ < 3:# <meta[replace] p="1.0" target="< 3" with=["< 3","< 5","< 4"]/>
+    print(_V_)
+    _V_ += 1
+print("z")
+# </meta[option]>
+# </meta[select]>
+# </meta[replace]>

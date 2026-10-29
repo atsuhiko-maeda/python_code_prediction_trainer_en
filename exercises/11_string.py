@@ -1,48 +1,30 @@
-# <replaceAll targets='["_A_","_B_"]' with='["a","b","c","d"]' />
-# <replaceAll targets='["_C_"]' with='["message","data","_s","temp"]' />
-# <replaceAll targets='["_CONTENT_"]' with='["hello","apple","cat","KAIT"]' />
-# <select>
-# <option>
-z = 1 + 4# <replace p = "1.0" from = '"1"' to= '["1","2","3"]' /><replace p = "1.0" from = '"4"' to= '["1","2","3"]' />
-z = str(z)
-print(z)
-# </option>
-# <option>
-_A_ = _CONTENT_
-z = _A_[]# <replace p = "1.0" from = '"[]"' to= '["[0]","[1]","[0:2]","[2:]"]' />
-print(z)
-# </option>
-# <option>
-_A_ = 1# <replace p = "1.0" from = '"1"' to= '["1","2","3"]' />
-_B_ = 2# <replace p = "1.0" from = '"2"' to= '["1","2","3"]' />
-z = str(_A_) + str(_B_)
-print(z)
-# </option>
-# <option>
-_C_ = _CONTENT_
-print(_C_)
-# </option>
-# <option>
-'_C_' = _CONTENT_
-print(_C_)
-# </option>
-# <option>
-_C_ = "_CONTENT_"
-print(_C_)
-# </option>
-# <option>
-num1 = 10# <replace p = "1.0" from = '"10"' to= '["10","20","30"]' />
-num2 = 20# <replace p = "1.0" from = '"10"' to= '["10","20","30"]' />
-print("{num1},{num2}")
-# </option>
-# <option>
-num1 = 10# <replace p = "1.0" from = '"10"' to= '["10","20","30"]' />
-num2 = 20# <replace p = "1.0" from = '"10"' to= '["10","20","30"]' />
-print(f"{num1},{num2}")
-# </option>
-# </select>
-
-# <explanation>
-# Key points:
-# - f-string syntax: f"...{variable_name}..."
-# </explanation>
+# <meta[replace] target=["_S_"] with=["s","t","name"]>
+# <meta[replace] target=["_W_"] with=["hello","world","python"]>
+# <meta[select]>
+# <meta[option]>
+_S_ = "_W_"# <meta[replace] p="1.0" target=['"_W_"'] with=['"_W_"','"_W_"',"_W_"]/>
+print(_S_)
+# </meta[option]>
+# <meta[option]>
+"_W_" = _S_
+print(_S_)
+# </meta[option]>
+# <meta[option]>
+a = 3# <meta[replace] p="1.0" target="3" with=["3","5","7"]/>
+b = 4# <meta[replace] p="1.0" target="4" with=["4","2","6"]/>
+print(a + b)
+print(str(a) + str(b))# <meta[replace] p="0.25" target="str(a) + str(b)" with=["str(a) + str(b)","a + str(b)","str(a) + b","a + b"]/>
+# </meta[option]>
+# <meta[option]>
+_S_ = "_W_"
+print(_S_[0])# <meta[replace] p="1.0" target="0" with=["0","1","2"]/>
+print(_S_[1:4])# <meta[replace] p="1.0" target="1:4" with=["1:4","0:3","2:5"]/>
+# </meta[option]>
+# <meta[option]>
+_S_ = "_W_"
+n = 2# <meta[replace] p="1.0" target="2" with=["2","5","7"]/>
+print(f"_S_={_S_}, n={n}")# <meta[replace] p="0.3" target='f"' with=['"']/>
+# </meta[option]>
+# </meta[select]>
+# </meta[replace]>
+# </meta[replace]>

@@ -1,22 +1,39 @@
-# <replaceAll targets='["_VAR_"]' with='["i","n"]' />
-print("a") # <skipLine p="0.5" />
-# <select>
-# <option>
-for _VAR_ in range(2): # <replace p="1.0" from="2" to='["2, 3","1, 3","0, 3", "2, 3", "1, 7, 2", "3, 0, -1", "0, 7, 2"]' />
-# </option>
-# <option>
-for _VAR_ in [0,1,2]: # <replace p="1.0" from='"[0,1,2]"' to='["[0,1,2]","[1,2]"]' />
-# </option>
-# </select>
-    print("b") # <replace p="0.5" from='"\"b\""' to='["_VAR_"]' />
-    print("c") # <skipLine p="0.2" />
-print("d") # <skipLine p="0.5" />
-
-# <explanation>
-# Key points:
-# - range(3) --> 0, 1, 2  (3 is excluded)
-# - range(1, 3) --> 1, 2  (1 is included, 3 is excluded)
-# - mylist[0:2] --> elements at index 0 and 1 (index 2 excluded)
-# - mylist[0:-2] --> from index 0 up to (not including) the second-to-last element
-# - Iterating over a list [0,1,2] with for yields all elements in order
-# </explanation>
+# <meta[replace] target=["_I_"] with=["i","j","k"]>
+# <meta[select]>
+# <meta[option]>
+for _I_ in [1, 3, 5]:# <meta[replace] p="0.2" target=":" with=[""]/><meta[replace] p="1.0" target="\[1, 3, 5\]" with=["\[1, 3, 5\]","\[2, 4, 6\]","\[10, 20, 30\]"]/>
+    print(_I_)
+# </meta[option]>
+# <meta[option]>
+for _I_ in [1, 3, 5]:# <meta[replace] p="0.2" target=":" with=[""]/><meta[replace] p="1.0" target="\[1, 3, 5\]" with=["\[1, 3, 5\]","\[2, 4, 6\]","\[10, 20, 30\]"]/>
+    print(_I_)
+    print("a")
+# </meta[option]>
+# <meta[option]>
+for _I_ in [1, 3, 5]:# <meta[replace] p="0.2" target=":" with=[""]/><meta[replace] p="1.0" target="\[1, 3, 5\]" with=["\[1, 3, 5\]","\[2, 4, 6\]","\[10, 20, 30\]"]/>
+    print(_I_)
+print("z")
+# </meta[option]>
+# <meta[option]>
+for _I_ in range(4):# <meta[replace] p="0.2" target=":" with=[""]/><meta[replace] p="1.0" target="4" with=["4","3","5"]/>
+    print("a")
+print("z")
+# </meta[option]>
+# <meta[option]>
+for _I_ in range(4):# <meta[replace] p="0.1" target=":" with=[""]/><meta[replace] p="1.0" target="4" with=["4","3","5"]/>
+    print("a")# <meta[replace] p="0.1" target="    print" with=["print"]/>
+# </meta[option]>
+# <meta[option]>
+for _I_ in range(1, 5):# <meta[replace] p="0.2" target=":" with=[""]/><meta[replace] p="1.0" target="1, 5" with=["1, 5","2, 5","0, 4"]/>
+    print(_I_)
+# </meta[option]>
+# <meta[option]>
+for _I_ in range(1, 8, 2):# <meta[replace] p="0.2" target=":" with=[""]/><meta[replace] p="1.0" target="1, 8, 2" with=["1, 8, 2","0, 6, 2","2, 9, 3"]/>
+    print(_I_)
+# </meta[option]>
+# <meta[option]>
+for _I_ in range(6, 0, -2):# <meta[replace] p="0.2" target=":" with=[""]/><meta[replace] p="1.0" target="6, 0, -2" with=["6, 0, -2","5, 0, -1","8, 0, -2"]/>
+    print(_I_)
+# </meta[option]>
+# </meta[select]>
+# </meta[replace]>

@@ -1,30 +1,42 @@
-# <replaceAll targets='["_VAR_"]' with='["data","mylist","vals","temp"]' />
-# <select>
-# <option>
-_VAR_ = (10,20,30,40,50)
-_VAR_[0] = 3# <skipLine p="0.5" /><replace p = "1.0" from = "0" to= "[0,1,2]" /><replace p = "1.0" from = "3" to= '["0","-1"]' />
-# </option>
-# <option>
-_VAR_ = [10,20,30,40,50]
-# </option>
-# </select>
-
-# <select>
-# <option>
-print(_VAR_[0])# <replace p = "1.0" from = "0" to= "[0,1,2,3,4,-1,-2]" />
-# </option>
-# <option>
-print(_VAR_[0])# <replace p = "1.0" from = '0' to= '["0:1","0:2","0:3","1:2","1:3","2:4","0:-1","0:-2"]' />
-# </option>
-# <option>
-print(_VAR_[0])# <replace p = "1.0" from = "0" to= '[":1",":2",":3","1:","2:","3:"]' />
-# </option>
-# </select>
-
-# <explanation>
-# Key points:
-# - Lists use [ ], e.g. [1, 2, 3]; tuples use ( ), e.g. (1, 2, 3)
-# - Lists are mutable; tuples are immutable
-# - Both are accessed the same way: list[0], tuple[0]
-# - Slicing is start-inclusive, end-exclusive: a[0:2] includes indices 0 and 1, not 2
-# </explanation>
+# <meta[replace] target=["_A_"] with=["a","b","data"]>
+# <meta[select]>
+# <meta[option]>
+_A_ = [10, 20, 30, 40, 50]# <meta[replace] p="1.0" target="\[10, 20, 30, 40, 50\]" with=["\[10, 20, 30, 40, 50\]","\[1, 2, 3, 4, 5\]","\[3, 6, 9, 12, 15\]"]/>
+print(_A_[0])# <meta[replace] p="1.0" target="0" with=["0","2","4"]/>
+# </meta[option]>
+# <meta[option]>
+_A_ = [10, 20, 30, 40, 50]# <meta[replace] p="1.0" target="\[10, 20, 30, 40, 50\]" with=["\[10, 20, 30, 40, 50\]","\[1, 2, 3, 4, 5\]","\[3, 6, 9, 12, 15\]"]/>
+print(_A_[-1])# <meta[replace] p="1.0" target="-1" with=["-1","-2","-3"]/>
+# </meta[option]>
+# <meta[option]>
+_A_ = (10, 20, 30, 40, 50)# <meta[replace] p="1.0" target="(10, 20, 30, 40, 50)" with=["(10, 20, 30, 40, 50)","(1, 2, 3, 4, 5)","(3, 6, 9, 12, 15)"]/>
+print(_A_[0])# <meta[replace] p="1.0" target="0" with=["0","2","4"]/>
+# </meta[option]>
+# <meta[option]>
+_A_ = (10, 20, 30, 40, 50)# <meta[replace] p="1.0" target="(10, 20, 30, 40, 50)" with=["(10, 20, 30, 40, 50)","(1, 2, 3, 4, 5)","(3, 6, 9, 12, 15)"]/>
+print(_A_[-2])# <meta[replace] p="1.0" target="-2" with=["-2","-1","-3"]/>
+# </meta[option]>
+# <meta[option]>
+_A_ = [10, 20, 30, 40, 50]# <meta[replace] p="1.0" target="\[10, 20, 30, 40, 50\]" with=["\[10, 20, 30, 40, 50\]","\[1, 2, 3, 4, 5\]","\[3, 6, 9, 12, 15\]"]/>
+print(_A_[:3])# <meta[replace] p="1.0" target=":3" with=[":3",":2",":4"]/>
+# </meta[option]>
+# <meta[option]>
+_A_ = [10, 20, 30, 40, 50]# <meta[replace] p="1.0" target="\[10, 20, 30, 40, 50\]" with=["\[10, 20, 30, 40, 50\]","\[1, 2, 3, 4, 5\]","\[3, 6, 9, 12, 15\]"]/>
+print(_A_[2:])# <meta[replace] p="1.0" target="2:" with=["2:","1:","3:"]/>
+# </meta[option]>
+# <meta[option]>
+_A_ = [10, 20, 30, 40, 50]# <meta[replace] p="1.0" target="\[10, 20, 30, 40, 50\]" with=["\[10, 20, 30, 40, 50\]","\[1, 2, 3, 4, 5\]","\[3, 6, 9, 12, 15\]"]/>
+print(_A_[-2:])# <meta[replace] p="1.0" target="-2:" with=["-2:","-3:",":-2",":-1"]/>
+# </meta[option]>
+# <meta[option]>
+_A_ = [10, 20, 30, 40, 50]# <meta[replace] p="1.0" target="\[10, 20, 30, 40, 50\]" with=["\[10, 20, 30, 40, 50\]","\[1, 2, 3, 4, 5\]","\[3, 6, 9, 12, 15\]"]/>
+_A_[2] = 99# <meta[replace] p="1.0" target="99" with=["99","7","100"]/>
+print(_A_)
+# </meta[option]>
+# <meta[option]>
+_A_ = (10, 20, 30, 40, 50)# <meta[replace] p="1.0" target="(10, 20, 30, 40, 50)" with=["(10, 20, 30, 40, 50)","(1, 2, 3, 4, 5)","(3, 6, 9, 12, 15)"]/>
+_A_[1] = 99# <meta[replace] p="1.0" target="99" with=["99","7","100"]/>
+print(_A_)
+# </meta[option]>
+# </meta[select]>
+# </meta[replace]>

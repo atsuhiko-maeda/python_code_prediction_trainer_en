@@ -5,15 +5,16 @@ let score_log;
 let pyodideReadyPromise;
 let fileName="untitled.py";
 
-let g_module;
+let parser;
+
+// let g_module;
 let start_time=0;
 let end_time=0;
 let previous_code = "";
-
 let currentCode="";
 let score = 0;
 let total_time = 0;
-let executed=false;
+let answerChecked=false;
 
 let template = `
 `;
@@ -23,6 +24,9 @@ let detail_log = []
 
 let explanations = "";
 let random_seed = 0;
+
+let original_console;
+let new_console;
 
 const SETTING = {
     'FONT_SIZE':20
@@ -117,7 +121,8 @@ function init(){
     });
 
     // define a new console
-    var console=(function(oldCons){
+    // var console=(function(oldCons){
+    new_console=(function(oldCons){
         return {
             log: function(text){
                 // oldCons.log(text);
@@ -139,8 +144,6 @@ function init(){
             }
         };
     }(window.console));
-    //Then redefine the old console
-    window.console = console;
 
 
     output.session.setValue("Loading...\n");
@@ -237,23 +240,27 @@ function init_ui(){
     });
 
     document.querySelector("#run").addEventListener("click",function(){
-        if (executed)
+        if (answerChecked)
             return;
 
         // SETTING['CODE']=editor.session.getValue();
         save_settings();
 
-        output.session.setValue("");
+        // output.session.setValue("");
         evaluatePython().then(value => {
-            executed = true;
+            answerChecked = true;
             let input_data = input.getValue().trim().replaceAll(" ","");
             let output_data = output.getValue().trim().replaceAll(" ","");
             let result = ((output_data.includes("PythonError:") && input_data==="") ||
+                        // output_data === input_data)? "正解":"不正解";
                         output_data === input_data)? "Correct":"Incorrect";
 
             end_time = performance.now();
             let elapsed_time = (end_time-start_time)*0.001;
-            
+
+            window.console = original_console;
+
+            // if (result==="正解"){
             if (result==="Correct"){
                 score+=10;
                 total_time += elapsed_time;
@@ -263,13 +270,17 @@ function init_ui(){
             }
 
             each_score[currentCode]=score;
-            detail_log.push(currentCode+" "+random_seed+" "+elapsed_time.toFixed(3)+"s "+result);
+            // detail_log.push(currentCode+" "+random_seed+" "+elapsed_time.toFixed(3)+"s "+result);
+            // detail_log.push(currentCode+" "+random_seed+" "+elapsed_time.toFixed(1)+"秒 "+result);
+            // detail_log.push(currentCode+" "+result+" "+elapsed_time.toFixed(1)+"秒 "+random_seed);
+            detail_log.push(currentCode+" "+result+" "+elapsed_time.toFixed(1)+" sec. "+random_seed);
 
             let target_score = document.querySelector("#target_score").value;
             target_score = parseInt(target_score);
             if (score===target_score){
                 let obj = document.querySelector("#achieved");
                 obj.innerHTML="🎉 "+target_score+" pts";
+                // obj.innerHTML=""+target_score+"点";
                 obj.style.visibility = 'visible';
                 setTimeout(function(){
                     document.querySelector("#achieved").style.visibility = 'hidden';
@@ -277,56 +288,78 @@ function init_ui(){
             }
 
             let str="--- Score per Exercise ---\n";
+            // let str="--- 各問題のスコア ---\n";
             const sortedKeys = Object.keys(each_score).sort();
             sortedKeys.forEach(key => {
                 str+=`${key}: ${each_score[key]} pts\n`;
+                // str+=`${key}: ${each_score[key]}点\n`;                
             });
             str+="\n-- Details --\n";
-            // alert(str);
+            // str+="\n-- 詳細 --\n";
+
             for (const e of detail_log) {
                 str+=e+"\n";
             }
-            // alert(str);
+
             score_log.session.setValue(str);
 
 
-            input.setOptions({readOnly: true});
-            const deco_result = (result==="Correct")? result+" !!" : result+"...";
+            input.setOptions({readOnly: true});            
+            const deco_result = (result==="Correct")? result+"!" : result+"...";
             if (deco_result.includes("Incorrect")){
                 output.session.setValue(output.getValue()+"\n"+deco_result+"\n"+elapsed_time.toFixed(3)+" sec"+"\n\n"+explanations);
             }
             else {
                 output.session.setValue(output.getValue()+"\n"+deco_result+"\n"+elapsed_time.toFixed(3)+" sec");
             }
+            // const deco_result = (result==="正解")? result+" !!" : result+"...";
+            // if (deco_result.includes("不正解")){
+            //     // output.session.setValue(output.getValue()+"\n"+deco_result+"\n"+elapsed_time.toFixed(1)+"秒"+"\n\n"+explanations);
+            //     output.session.setValue(output.getValue()+"\n"+deco_result+"\n"+elapsed_time.toFixed(1)+" sec."+"\n\n"+explanations);
+            // }
+            // else {
+            //     // output.session.setValue(output.getValue()+"\n"+deco_result+"\n"+elapsed_time.toFixed(1)+"秒");
+            //     output.session.setValue(output.getValue()+"\n"+deco_result+"\n"+elapsed_time.toFixed(1)+" sec.");
+            // }
+            
         });
     });
 
     document.querySelector("#nextQesution").addEventListener('click', function() {
-
-        if (template!=="" && executed){
-            input.session.setValue("");
-            output.session.setValue("");
-            executed = false;
-            input.setOptions({readOnly: false});
-
-            let seed = parseInt(document.querySelector("#seed").value);
-            if (isNaN(seed)){
-                seed = null;
-            }
-
-            let new_code="";
-            let i=0;
-            do{
-                i++;
-                [new_code, explanations, random_seed] = processTemplate(template, seed);
-            }while(new_code === previous_code && i<100);
-    
-            // console.log("i:"+i);
-            previous_code = new_code;
-            editor.session.setValue(new_code);
-            start_time = performance.now();
+        if (template!=="" && answerChecked){
+            generateQuiz();
         }
     });
+}
+
+function generateQuiz(){
+
+    input.session.setValue("");
+    output.session.setValue("");
+    answerChecked = false;
+    input.setOptions({readOnly: false});
+
+    let new_code="";
+    let quizInputHtml="";
+    random_seed = parseInt(document.querySelector("#seed").value);
+    if (isNaN(random_seed)){
+        let i=0;
+        do{
+            random_seed = new Date().getTime()+i;
+            i++;
+            new_code = parser.printQuiz(random_seed);
+            explanations = "";
+
+        }while(new_code === previous_code && i<100);
+    }
+    else{
+        new_code = parser.printQuiz(random_seed);
+        explanations = "";
+    }
+
+    previous_code = new_code;
+    editor.session.setValue(new_code);
+    start_time = performance.now();
 }
 
 function save_settings(){
@@ -335,6 +368,9 @@ function save_settings(){
 
 async function evaluatePython() {
     output.session.setValue("");
+
+    original_console = window.console;
+    window.console = new_console;
 
     let pyodide = await pyodideReadyPromise;
     pyodide.FS.writeFile("test.py", editor.session.getValue());
@@ -345,8 +381,10 @@ async function evaluatePython() {
         `)
     }).catch(err => {
         console.log(err);
-    });
+   });
 
+    // original_console = window.console;
+ 
     // await promise;//20250128
 }
 
@@ -408,23 +446,14 @@ function setMaterial(){
     .then(response => response.text())
     .then(text => {
         template = text;
-        let new_code="";
-        [new_code,explanations, random_seed] = processTemplate(template);
-        editor.session.setValue(new_code);
-    
+
+        parser = new MetaLangParser();
+        const parseResult = parser.parse(template);
+        console.log(parseResult);
+
         total_time=0;
         score=0;
-        // document.querySelector("#score").innerHTML = currentCode+" ("+total_time.toFixed(3)+"秒) Score: "+score;
-    
-        // input.session.setValue("");
-        // input.setOptions({readOnly: false});
 
-
-        input.session.setValue("");
-        output.session.setValue("");
-        executed = false;
-        input.setOptions({readOnly: false});
-
-        start_time = performance.now();
+        generateQuiz();
     });
 }

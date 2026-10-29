@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Python Code Prediction Trainer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --bg: #1a1d2e;
+            --panel-bg: #252840;
+            --panel-border: #3a3f6b;
+            --accent: #7c83ff;
+            --accent-hover: #9da3ff;
+            --text: #e0e0f0;
+            --label-bg: #1e2138;
+            --btn-bg: #3a3f6b;
+            --btn-hover: #4e55a0;
+            --btn-active: #6068c8;
+            --header-bg: #12142a;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        /* ── App header ── */
+        #app-header {
+            background: var(--header-bg);
+            border-bottom: 1px solid var(--panel-border);
+            padding: 0.35em 1em;
+            display: flex;
+            align-items: center;
+            gap: 1.2em;
+            height: 5vh;
+        }
+
+        #app-header h1 {
+            margin: 0;
+            font-size: 1em;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+
+        /* ── Controls row ── */
+        #controls-row {
+            display: flex;
+            align-items: center;
+            gap: 0.6em;
+            flex: 1;
+            flex-wrap: wrap;
+        }
+
+        #exercises {
+            padding: 0.2em 0.6em;
+            background: var(--panel-bg);
+            color: var(--text);
+            border: 1px solid var(--panel-border);
+            border-radius: 5px;
+            font-size: 0.85em;
+            cursor: pointer;
+            min-width: 200px;
+        }
+
+        #exercises:focus { outline: 1px solid var(--accent); }
+
+        /* ── Buttons ── */
+        .btn {
+            padding: 0.3em 0.9em;
+            background: var(--btn-bg);
+            color: var(--text);
+            border: 1px solid var(--panel-border);
+            border-radius: 5px;
+            font-size: 0.82em;
+            cursor: pointer;
+            transition: background 0.15s;
+            white-space: nowrap;
+        }
+        .btn:hover { background: var(--btn-hover); }
+        .btn:active { background: var(--btn-active); }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            font-weight: 600;
+        }
+        .btn-primary:hover { background: var(--accent-hover); }
+
+        /* ── Target score ── */
+        #target-score-group {
+            display: flex;
+            align-items: center;
+            gap: 0.4em;
+            font-size: 0.82em;
+            margin-left: auto;
+        }
+
+        #target_score {
+            width: 4.5em;
+            padding: 0.2em 0.4em;
+            background: var(--panel-bg);
+            color: var(--text);
+            border: 1px solid var(--panel-border);
+            border-radius: 5px;
+            font-size: 1em;
+            text-align: center;
+        }
+
+        /* ── Panels grid ── */
+        #panels {
+            display: grid;
+            grid-template-columns: 30% 20% 25% 25%;
+            grid-template-rows: 1.8em 1fr;
+            height: 88vh;
+            gap: 0;
+        }
+
+        .panel-label {
+            background: var(--label-bg);
+            border-bottom: 1px solid var(--panel-border);
+            border-right: 1px solid var(--panel-border);
+            padding: 0.2em 0.7em;
+            font-size: 0.72em;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #8890c8;
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+        }
+
+        .panel-label span.hint {
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: 0;
+            color: #5a6080;
+        }
+
+        .panel-body {
+            border-right: 1px solid var(--panel-border);
+            overflow: hidden;
+        }
+
+        #editor    { height: 100%; }
+        #input     { height: 100%; }
+        #output    { height: 100%; }
+        #score_log { height: 100%; }
+
+        /* ── Footer ── */
+        #footer {
+            height: 7vh;
+            background: var(--header-bg);
+            border-top: 1px solid var(--panel-border);
+            display: flex;
+            align-items: center;
+            padding: 0 0.8em;
+            gap: 1em;
+        }
+
+        #footer label {
+            font-size: 0.78em;
+            color: #8890c8;
+        }
+
+        .font-btn {
+            width: 1.8em;
+            height: 1.8em;
+            padding: 0;
+            font-size: 1em;
+            font-weight: bold;
+            line-height: 1;
+            background: var(--btn-bg);
+            color: var(--text);
+            border: 1px solid var(--panel-border);
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .font-btn:hover { background: var(--btn-hover); }
+
+        #theme-selector {
+            padding: 0.2em 0.4em;
+            background: var(--panel-bg);
+            color: var(--text);
+            border: 1px solid var(--panel-border);
+            border-radius: 5px;
+            font-size: 0.8em;
+        }
+
+        /* ── Achievement overlay ── */
+        #achieved {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 160px;
+            font-weight: 900;
+            line-height: 1;
+            z-index: 100;
+            pointer-events: none;
+            color: #ffb3b3;
+            opacity: 0.75;
+            visibility: hidden;
+            text-shadow: 0 0 40px rgba(255,120,120,0.5);
+        }
+
+        /* ── Hidden seed input ── */
+        #seed { visibility: visible; width: 30ch; }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.31.2/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ext-language_tools.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/mode-python.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/snippets/python.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.22.1/full/pyodide.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+
+    <script src="MetaLangParser_v20260507.js"></script>
+    <script src="onlinePython.js"></script>
+</head>
+<body onload="init()">
+    <span id="achieved">🎉</span>
+
+    <!-- ── Header bar ── -->
+    <header id="app-header">
+        <h1>Python Code Prediction Trainer</h1>
+        <div id="controls-row">
+            <select id="exercises" onchange="setMaterial()">
+                <option value="">-- Select Exercise --</option>
+            </select>
+            <!-- <input type="number" name="seed" id="seed" value=""/> -->
+            <button id="run" class="btn btn-primary">Check Answer</button>
+            <button id="nextQesution" class="btn">Next Problem</button>
+            <div id="target-score-group">
+                <label for="target_score">Target Score:</label>
+                <input type="number" name="target_score" id="target_score" value="100"/>
+                <button type="button" onclick="getScoreLog()" class="btn">Download Score Log</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ── Panel labels ── -->
+    <div id="panels">
+        <div class="panel-label">Python Code</div>
+        <div class="panel-label">Your Prediction
+            <span class="hint">— leave blank if you expect an error</span>
+        </div>
+        <div class="panel-label">Output</div>
+        <div class="panel-label">Score Log</div>
+
+        <div class="panel-body"><div id="editor"></div></div>
+        <div class="panel-body"><div id="input"></div></div>
+        <div class="panel-body"><div id="output"></div></div>
+        <div class="panel-body"><div id="score_log"></div></div>
+    </div>
+
+    <!-- ── Footer ── -->
+    <footer id="footer">
+        <label>Font Size:</label>
+        <button id="increase_font_size" class="font-btn">+</button>
+        <button id="decrease_font_size" class="font-btn">−</button>
+        <label style="margin-left:1em;">Theme:</label>
+        <select id="theme-selector">
+            <optgroup id="Bright" label="Bright"></optgroup>
+            <optgroup id="Dark" label="Dark"></optgroup>
+        </select>
+        <label>Seed:</label>
+        <input type="number" name="seed" id="seed" value=""/>
+    </footer>
+</body>
+</html>
