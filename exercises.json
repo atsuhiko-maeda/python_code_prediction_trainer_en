@@ -1,7 +1,7 @@
 [
     {
         "chapter":"Arithmetic & Data Structures",
-        "exercises":{
+        "exercises":{ 
             "10 Arithmetic Operators":"10_arithmetic_ops.py",
             "11 Strings":"11_string.py",
             "12 Lists & Tuples":"12_list_tuple.py",
